@@ -1,2 +1,2 @@
-import mnist
-import viz
+from . import mnist
+from . import viz

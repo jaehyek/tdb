@@ -1,11 +1,11 @@
 
 COUNT=0
 
-from python_op import PythonOp
-import app
+from .python_op import PythonOp
+from . import app
 import inspect
 import matplotlib.pyplot as plt
-import op_store
+from . import op_store
 
 def plot_op(fn, inputs=[], outputs=[]):
 	"""

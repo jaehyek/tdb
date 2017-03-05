@@ -87,8 +87,8 @@ def _activation_summary(x):
   """
   # Remove 'tower_[0-9]/' from the name in case this is a multi-GPU training
   # session. This helps the clarity of presentation on tensorboard.
-  tf.histogram_summary(x.name + '/activations', x)
-  tf.scalar_summary(x.name + '/sparsity', tf.nn.zero_fraction(x))
+  tf.summary.histogram(x.name + '/activations', x)
+  tf.summary.scalar(x.name + '/sparsity', tf.nn.zero_fraction(x))
 
 # MODEL BUILDING
 def build_model():
@@ -146,9 +146,9 @@ def build_model():
 
   # TRAINING LOSS / REGULARIZATION NODES
   logits = build_lenet(train_data_node, True)
-  loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits, train_labels_node))
+  loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=train_labels_node))
 
-  tf.scalar_summary(loss.op.name,loss)
+  tf.summary.scalar(loss.op.name,loss)
 
   regularizers = (tf.nn.l2_loss(fc1_weights) + tf.nn.l2_loss(fc1_biases) + tf.nn.l2_loss(fc2_weights) + tf.nn.l2_loss(fc2_biases))
   # Add the regularization term to the loss.
@@ -172,7 +172,7 @@ def build_model():
   validation_prediction = tf.nn.softmax(build_lenet(validation_data_node))
   test_prediction = tf.nn.softmax(build_lenet(test_data_node))
 
-  summaries=tf.merge_all_summaries()
+  summaries=tf.summary.merge_all()
 
   # return input nodes and output nodes
   return (train_data_node,
