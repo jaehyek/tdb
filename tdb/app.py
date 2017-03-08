@@ -1,7 +1,8 @@
 from base64 import b64encode
 from ipykernel.comm import Comm 
 from IPython import get_ipython
-from io import StringIO
+#from io import StringIO
+from io import BytesIO as BytesIO
 import urllib
 
 _comm=None
@@ -42,10 +43,10 @@ def send_fig(fig,name):
 	"""
 	sends figure to frontend
 	"""
-	imgdata = StringIO.StringIO()
+	imgdata = BytesIO()
 	fig.savefig(imgdata, format='png')
 	imgdata.seek(0)  # rewind the data
-	uri = 'data:image/png;base64,' + urllib.quote(b64encode(imgdata.buf))
+	uri = 'data:image/png;base64,' + urllib.parse.quote(b64encode(imgdata.getvalue()))
 	send_action("update_plot",params={"src":uri, "name":name})
 
 # handler messages

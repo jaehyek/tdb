@@ -1,13 +1,14 @@
+"""
+%%javascript
+Jupyter.utils.load_extensions('tdb_ext/main')
+"""
+
 import tdb
 from tdb.examples import mnist, viz
-
-
 
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import urllib
-
-exit()
 
 
 (train_data_node,
@@ -47,16 +48,18 @@ p4=tdb.plot_op(viz.viz_fc_weights,inputs=[g.as_graph_element(fc2_weights)])
 p2=tdb.plot_op(viz.viz_conv_hist,inputs=[g.as_graph_element(conv1_weights)])
 ploss=tdb.plot_op(viz.watch_loss,inputs=[loss])
 
-# Download the MNIST dataset
-base_url='http://yann.lecun.com/exdb/mnist/'
-files=['train-images-idx3-ubyte.gz',
- 'train-labels-idx1-ubyte.gz',
- 't10k-images-idx3-ubyte.gz',
- 't10k-labels-idx1-ubyte.gz']
-download_dir='/tmp/'
-for f in files:
-    print(f)
-    urllib.urlretrieve(base_url+f, download_dir+f)
+download_dir='./mnist/'
+
+# # Download the MNIST dataset
+# base_url='http://yann.lecun.com/exdb/mnist/'
+# files=['train-images-idx3-ubyte.gz',
+#  'train-labels-idx1-ubyte.gz',
+#  't10k-images-idx3-ubyte.gz',
+#  't10k-labels-idx1-ubyte.gz']
+#
+# for f in files:
+#     print(f)
+#     urllib.urlretrieve(base_url+f, download_dir+f)
     
 # return the TF nodes corresponding to graph input placeholders
 (train_data, 
@@ -76,7 +79,7 @@ BATCH_SIZE = 64
 NUM_EPOCHS = 5
 TRAIN_SIZE=10000
 
-for step in xrange(NUM_EPOCHS * TRAIN_SIZE // BATCH_SIZE):
+for step in range(NUM_EPOCHS * TRAIN_SIZE // BATCH_SIZE):
     offset = (step * BATCH_SIZE) % (TRAIN_SIZE - BATCH_SIZE)
     batch_data = train_data[offset:(offset + BATCH_SIZE), :, :, :]
     batch_labels = train_labels[offset:(offset + BATCH_SIZE)]
